@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bloggo/controllers"
 	docs "bloggo/docs"
 
 	"github.com/gin-gonic/gin"
@@ -8,17 +9,12 @@ import (
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
-// @title Swagger Example API
+// @title Bloggo API
 // @version 1.0
-// @description This is a sample server celler server.
-// @termsOfService http://swagger.io/terms/
+// @description This is a headless content management system
 
-// @contact.name API Support
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
-
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @contact.name Hadekha Erfadila Fitra
+// @contact.email hdkef11@gmail.com
 
 // @host localhost:8080
 // @BasePath /api/v1
@@ -58,7 +54,78 @@ import (
 
 func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
+
 	r := gin.Default()
+
+	authCtl := &controllers.AuthCtl{}
+	articleCtl := &controllers.ArticleCtl{}
+	commentCtl := &controllers.CommentCtl{}
+	draftCtl := &controllers.DraftCtl{}
+	inboxCtl := &controllers.InboxCtl{}
+	mediaCtl := &controllers.MediaCtl{}
+	ratingCtl := &controllers.RatingCtl{}
+	userCtl := &controllers.UserCtl{}
+
+	v1 := r.Group("/api/v1")
+	{
+		articles := v1.Group("/articles")
+		{
+			articles.GET("", articleCtl.GetAll())
+			articles.GET(":id", articleCtl.GetOne())
+			articles.POST("", articleCtl.Post())
+			articles.PUT(":id", articleCtl.Put())
+			articles.DELETE(":id", articleCtl.Delete())
+		}
+		comments := v1.Group("/comments")
+		{
+			comments.GET(":article-id", commentCtl.GetAll())
+			comments.POST(":article-id", commentCtl.Post())
+			comments.PUT(":id", commentCtl.Put())
+			comments.DELETE(":id", commentCtl.Delete())
+		}
+		drafts := v1.Group("/drafts")
+		{
+			drafts.GET("", draftCtl.GetAll())
+			drafts.GET(":id", draftCtl.GetOne())
+			drafts.POST("", draftCtl.Post())
+			drafts.PUT(":id", draftCtl.Put())
+			drafts.DELETE(":id", draftCtl.Delete())
+		}
+		inboxes := v1.Group("/inboxes")
+		{
+			inboxes.GET("", inboxCtl.GetAll())
+			inboxes.POST(":receiver-id", inboxCtl.Post())
+			inboxes.PUT(":id", inboxCtl.Put())
+			inboxes.DELETE(":id", inboxCtl.Delete())
+		}
+		media := v1.Group("/media")
+		{
+			media.GET("", mediaCtl.GetAll())
+			media.POST("", mediaCtl.Post())
+			media.PUT(":id", mediaCtl.Put())
+			media.DELETE(":id", mediaCtl.Delete())
+		}
+		rating := v1.Group("/ratings")
+		{
+			rating.GET("", ratingCtl.GetAll())
+			rating.POST("", ratingCtl.Post())
+			rating.PUT(":id", ratingCtl.Put())
+			rating.DELETE(":id", ratingCtl.Delete())
+		}
+		auth := v1.Group("/auth")
+		{
+			auth.POST("login", authCtl.Login())
+		}
+		user := v1.Group("/users")
+		{
+			user.GET("", userCtl.GetAll())
+			user.GET(":id", userCtl.GetOne())
+			user.GET(":id/public", userCtl.GetOnePublic())
+			user.POST("", userCtl.Post())
+			user.PUT(":id", userCtl.Put())
+			user.DELETE(":id", userCtl.Delete())
+		}
+	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run(":8080")

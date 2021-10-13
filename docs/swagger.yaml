@@ -1,18 +1,581 @@
 basePath: /api/v1
+definitions:
+  swagmodel.GetArticle:
+    properties:
+      body:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+      imageURL:
+        type: string
+      title:
+        type: string
+    type: object
+  swagmodel.GetComment:
+    properties:
+      articleID:
+        type: integer
+      body:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+    type: object
+  swagmodel.GetDraft:
+    properties:
+      body:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+      imageURL:
+        type: string
+      title:
+        type: string
+    type: object
+  swagmodel.GetUser:
+    properties:
+      avatarURL:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  swagmodel.GetUserPublic:
+    properties:
+      avatarURL:
+        type: string
+      bio:
+        type: string
+      id:
+        type: integer
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  swagmodel.InputArticle:
+    properties:
+      body:
+        type: string
+      imageURL:
+        type: string
+      title:
+        type: string
+    type: object
+  swagmodel.InputComment:
+    properties:
+      body:
+        type: string
+    type: object
+  swagmodel.InputDraft:
+    properties:
+      body:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+      imageURL:
+        type: string
+      title:
+        type: string
+    type: object
+  swagmodel.InputUser:
+    properties:
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  swagmodel.Response:
+    properties:
+      msg:
+        type: string
+      success:
+        type: boolean
+    type: object
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server celler server.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
+    email: hdkef11@gmail.com
+    name: Hadekha Erfadila Fitra
+  description: This is a headless content management system
+  title: Bloggo API
   version: "1.0"
-paths: {}
+paths:
+  /articles:
+    get:
+      description: get all articles navigated by last-id and limit.
+      parameters:
+      - description: ID of the last article in recent array of article
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many article you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetArticle'
+            type: array
+      summary: get all articles
+      tags:
+      - articles
+    post:
+      consumes:
+      - application/json
+      description: create an article
+      parameters:
+      - description: create an article
+        in: body
+        name: article
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an article
+      tags:
+      - articles
+  /articles/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an article
+      parameters:
+      - description: ID of article
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an article
+      tags:
+      - articles
+    get:
+      description: get detail of article specified by id
+      parameters:
+      - description: ID of article
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.GetArticle'
+      summary: get one article
+      tags:
+      - articles
+    put:
+      consumes:
+      - application/json
+      description: update an article
+      parameters:
+      - description: ID of article
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an article
+        in: body
+        name: article
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputArticle'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an article
+      tags:
+      - articles
+  /comments/{article-id}:
+    get:
+      description: get all comments navigated by last-id and limit.
+      parameters:
+      - description: ID of article
+        in: path
+        name: article-id
+        required: true
+        type: integer
+      - description: ID of the last comment in recent array of comment
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many comment you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetComment'
+            type: array
+      summary: get all comments
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: create an comment
+      parameters:
+      - description: ID of article
+        in: path
+        name: article-id
+        required: true
+        type: integer
+      - description: create an comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputComment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an comment
+      tags:
+      - comments
+  /comments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an comment
+      parameters:
+      - description: ID of comment
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an comment
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: update an comment
+      parameters:
+      - description: ID of comment
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an comment
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputComment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an comment
+      tags:
+      - comments
+  /drafts:
+    get:
+      description: get all drafts navigated by last-id and limit.
+      parameters:
+      - description: ID of the last draft in recent array of draft
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many draft you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetDraft'
+            type: array
+      summary: get all drafts
+      tags:
+      - drafts
+    post:
+      consumes:
+      - application/json
+      description: create an draft
+      parameters:
+      - description: create an draft
+        in: body
+        name: draft
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputDraft'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an draft
+      tags:
+      - drafts
+  /drafts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an draft
+      parameters:
+      - description: ID of draft
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an draft
+      tags:
+      - drafts
+    get:
+      description: get detail of draft specified by id
+      parameters:
+      - description: ID of draft
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.GetDraft'
+      summary: get one draft
+      tags:
+      - drafts
+    put:
+      consumes:
+      - application/json
+      description: update an draft
+      parameters:
+      - description: ID of draft
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an draft
+        in: body
+        name: draft
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputDraft'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an draft
+      tags:
+      - drafts
+  /users:
+    get:
+      description: get all users navigated by last-id and limit.
+      parameters:
+      - description: ID of the last user in recent array of user
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many user you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetUser'
+            type: array
+      summary: get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: create an user
+      parameters:
+      - description: create an user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an user
+      parameters:
+      - description: ID of user
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an user
+      tags:
+      - users
+    get:
+      description: get detail of user specified by id
+      parameters:
+      - description: ID of user
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.GetUser'
+      summary: get one user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: update an user
+      parameters:
+      - description: ID of user
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an user, only super-admin can update role
+      tags:
+      - users
+  /users/{id}/public:
+    get:
+      description: get detail of user specified by id
+      parameters:
+      - description: ID of user
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.GetUserPublic'
+      summary: get one user public information (without password information)
+      tags:
+      - users
 securityDefinitions:
   ApiKeyAuth:
     in: header
