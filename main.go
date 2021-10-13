@@ -93,7 +93,7 @@ func main() {
 		}
 		inboxes := v1.Group("/inboxes")
 		{
-			inboxes.GET("", inboxCtl.GetAll())
+			inboxes.GET(":receiver-id", inboxCtl.GetAll())
 			inboxes.POST(":receiver-id", inboxCtl.Post())
 			inboxes.PUT(":id", inboxCtl.Put())
 			inboxes.DELETE(":id", inboxCtl.Delete())
@@ -107,14 +107,16 @@ func main() {
 		}
 		rating := v1.Group("/ratings")
 		{
-			rating.GET("", ratingCtl.GetAll())
-			rating.POST("", ratingCtl.Post())
+			rating.GET(":article-id", ratingCtl.GetAll())
+			rating.GET(":article-id/sum", ratingCtl.GetSum())
+			rating.POST(":article-id", ratingCtl.Post())
 			rating.PUT(":id", ratingCtl.Put())
 			rating.DELETE(":id", ratingCtl.Delete())
 		}
 		auth := v1.Group("/auth")
 		{
 			auth.POST("login", authCtl.Login())
+			auth.POST("register", authCtl.Register())
 		}
 		user := v1.Group("/users")
 		{

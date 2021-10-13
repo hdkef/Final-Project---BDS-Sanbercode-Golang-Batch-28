@@ -37,6 +37,48 @@ definitions:
       title:
         type: string
     type: object
+  swagmodel.GetInbox:
+    properties:
+      body:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+      receiverID:
+        type: integer
+    type: object
+  swagmodel.GetMedia:
+    properties:
+      alt:
+        type: string
+      caption:
+        type: string
+      creatorID:
+        type: integer
+      id:
+        type: integer
+      url:
+        type: string
+    type: object
+  swagmodel.GetRating:
+    properties:
+      articleID:
+        type: integer
+      id:
+        type: integer
+      star:
+        type: integer
+    type: object
+  swagmodel.GetRatingSum:
+    properties:
+      articleID:
+        type: integer
+      avgStar:
+        type: integer
+      id:
+        type: integer
+    type: object
   swagmodel.GetUser:
     properties:
       avatarURL:
@@ -92,6 +134,25 @@ definitions:
       title:
         type: string
     type: object
+  swagmodel.InputInbox:
+    properties:
+      body:
+        type: string
+    type: object
+  swagmodel.InputMedia:
+    properties:
+      alt:
+        type: string
+      caption:
+        type: string
+      url:
+        type: string
+    type: object
+  swagmodel.InputRating:
+    properties:
+      star:
+        type: integer
+    type: object
   swagmodel.InputUser:
     properties:
       password:
@@ -99,6 +160,20 @@ definitions:
       role:
         type: string
       username:
+        type: string
+    type: object
+  swagmodel.LoginPayload:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  swagmodel.LoginResponse:
+    properties:
+      token:
+        type: string
+      tokenType:
         type: string
     type: object
   swagmodel.Response:
@@ -445,6 +520,349 @@ paths:
       summary: update an draft
       tags:
       - drafts
+  /inboxes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an inbox
+      parameters:
+      - description: ID of inbox
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an inbox
+      tags:
+      - inboxes
+    put:
+      consumes:
+      - application/json
+      description: update an inbox
+      parameters:
+      - description: ID of inbox
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an inbox
+        in: body
+        name: inbox
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputInbox'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an inbox
+      tags:
+      - inboxes
+  /inboxes/{receiver-id}:
+    get:
+      description: get all inboxes navigated by last-id and limit.
+      parameters:
+      - description: ID of user / receiver
+        in: path
+        name: receiver-id
+        required: true
+        type: integer
+      - description: ID of the last inbox in recent array of inboxes
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many inboxes you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetInbox'
+            type: array
+      summary: get all inboxes
+      tags:
+      - inboxes
+    post:
+      consumes:
+      - application/json
+      description: create an inbox
+      parameters:
+      - description: ID of user / receiver
+        in: path
+        name: receiver-id
+        required: true
+        type: integer
+      - description: create an inbox
+        in: body
+        name: inbox
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputInbox'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an inbox
+      tags:
+      - inboxes
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: send username and password to get JWT Token
+      parameters:
+      - description: create an user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.LoginPayload'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.LoginResponse'
+      summary: send username and password to get JWT Token
+      tags:
+      - auth
+  /media:
+    get:
+      description: get all media navigated by last-id and limit.
+      parameters:
+      - description: ID of the last media in recent array of media
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many media you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetMedia'
+            type: array
+      summary: get all media
+      tags:
+      - media
+    post:
+      consumes:
+      - application/json
+      description: create an media
+      parameters:
+      - description: create an media
+        in: body
+        name: media
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputMedia'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an media
+      tags:
+      - media
+  /media/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an media
+      parameters:
+      - description: ID of media
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an media
+      tags:
+      - media
+    put:
+      consumes:
+      - application/json
+      description: update an media
+      parameters:
+      - description: ID of media
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an media
+        in: body
+        name: media
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputMedia'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an media
+      tags:
+      - media
+  /ratings/{article-id}:
+    get:
+      description: get all ratings navigated by last-id and limit.
+      parameters:
+      - description: ID of article
+        in: path
+        name: article-id
+        required: true
+        type: integer
+      - description: ID of the last rating in recent array of rating
+        in: query
+        name: last-id
+        required: true
+        type: integer
+      - description: how many rating you want to take
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/swagmodel.GetRating'
+            type: array
+      summary: get all ratings
+      tags:
+      - ratings
+    post:
+      consumes:
+      - application/json
+      description: create an rating
+      parameters:
+      - description: ID of article
+        in: path
+        name: article-id
+        required: true
+        type: integer
+      - description: create an rating
+        in: body
+        name: rating
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputRating'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: create an rating
+      tags:
+      - ratings
+  /ratings/{article-id}/sum:
+    get:
+      description: get summed ratings navigated by last-id and limit.
+      parameters:
+      - description: ID of article
+        in: path
+        name: article-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.GetRatingSum'
+      summary: get summed ratings
+      tags:
+      - ratings
+  /ratings/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete an rating
+      parameters:
+      - description: ID of rating
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: delete an rating
+      tags:
+      - ratings
+    put:
+      consumes:
+      - application/json
+      description: update an rating
+      parameters:
+      - description: ID of rating
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: update an rating
+        in: body
+        name: rating
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.InputRating'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: update an rating
+      tags:
+      - ratings
   /users:
     get:
       description: get all users navigated by last-id and limit.

@@ -520,6 +520,523 @@ var doc = `{
                 }
             }
         },
+        "/inboxes/{id}": {
+            "put": {
+                "description": "update an inbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inboxes"
+                ],
+                "summary": "update an inbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of inbox",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "update an inbox",
+                        "name": "inbox",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputInbox"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an inbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inboxes"
+                ],
+                "summary": "delete an inbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of inbox",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/inboxes/{receiver-id}": {
+            "get": {
+                "description": "get all inboxes navigated by last-id and limit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inboxes"
+                ],
+                "summary": "get all inboxes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of user / receiver",
+                        "name": "receiver-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID of the last inbox in recent array of inboxes",
+                        "name": "last-id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "how many inboxes you want to take",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swagmodel.GetInbox"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create an inbox",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inboxes"
+                ],
+                "summary": "create an inbox",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of user / receiver",
+                        "name": "receiver-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "create an inbox",
+                        "name": "inbox",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputInbox"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "send username and password to get JWT Token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "send username and password to get JWT Token",
+                "parameters": [
+                    {
+                        "description": "create an user",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.LoginPayload"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/media": {
+            "get": {
+                "description": "get all media navigated by last-id and limit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "media"
+                ],
+                "summary": "get all media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of the last media in recent array of media",
+                        "name": "last-id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "how many media you want to take",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swagmodel.GetMedia"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create an media",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "media"
+                ],
+                "summary": "create an media",
+                "parameters": [
+                    {
+                        "description": "create an media",
+                        "name": "media",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputMedia"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/media/{id}": {
+            "put": {
+                "description": "update an media",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "media"
+                ],
+                "summary": "update an media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of media",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "update an media",
+                        "name": "media",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputMedia"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an media",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "media"
+                ],
+                "summary": "delete an media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of media",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/ratings/{article-id}": {
+            "get": {
+                "description": "get all ratings navigated by last-id and limit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "get all ratings",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of article",
+                        "name": "article-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID of the last rating in recent array of rating",
+                        "name": "last-id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "how many rating you want to take",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swagmodel.GetRating"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create an rating",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "create an rating",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of article",
+                        "name": "article-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "create an rating",
+                        "name": "rating",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputRating"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/ratings/{article-id}/sum": {
+            "get": {
+                "description": "get summed ratings navigated by last-id and limit.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "get summed ratings",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of article",
+                        "name": "article-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.GetRatingSum"
+                        }
+                    }
+                }
+            }
+        },
+        "/ratings/{id}": {
+            "put": {
+                "description": "update an rating",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "update an rating",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of rating",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "update an rating",
+                        "name": "rating",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.InputRating"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete an rating",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "summary": "delete an rating",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID of rating",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "get all users navigated by last-id and limit.",
@@ -777,6 +1294,71 @@ var doc = `{
                 }
             }
         },
+        "swagmodel.GetInbox": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                },
+                "creatorID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "receiverID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "swagmodel.GetMedia": {
+            "type": "object",
+            "properties": {
+                "alt": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string"
+                },
+                "creatorID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.GetRating": {
+            "type": "object",
+            "properties": {
+                "articleID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "star": {
+                    "type": "integer"
+                }
+            }
+        },
+        "swagmodel.GetRatingSum": {
+            "type": "object",
+            "properties": {
+                "articleID": {
+                    "type": "integer"
+                },
+                "avgStar": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
         "swagmodel.GetUser": {
             "type": "object",
             "properties": {
@@ -862,6 +1444,36 @@ var doc = `{
                 }
             }
         },
+        "swagmodel.InputInbox": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.InputMedia": {
+            "type": "object",
+            "properties": {
+                "alt": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.InputRating": {
+            "type": "object",
+            "properties": {
+                "star": {
+                    "type": "integer"
+                }
+            }
+        },
         "swagmodel.InputUser": {
             "type": "object",
             "properties": {
@@ -872,6 +1484,28 @@ var doc = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.LoginPayload": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "tokenType": {
                     "type": "string"
                 }
             }
