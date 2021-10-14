@@ -160,6 +160,10 @@ definitions:
     type: object
   swagmodel.InputUser:
     properties:
+      avatarURL:
+        type: string
+      bio:
+        type: string
       password:
         type: string
       role:
@@ -169,6 +173,17 @@ definitions:
     type: object
   swagmodel.LoginPayload:
     properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  swagmodel.Register:
+    properties:
+      avatarURL:
+        type: string
+      bio:
+        type: string
       password:
         type: string
       username:
@@ -186,7 +201,7 @@ info:
   contact:
     email: hdkef11@gmail.com
     name: Hadekha Erfadila Fitra
-  description: This is a headless content management system
+  description: Bloggo is a REST Api for blogging
   title: Bloggo API
   version: "1.0"
 paths:
@@ -883,6 +898,28 @@ paths:
       summary: update an rating
       tags:
       - ratings
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: send username, password, bio, and avatar url
+      parameters:
+      - description: create a regular user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: register a regular user
+      tags:
+      - auth
   /users:
     get:
       description: get all users navigated by last-id and limit.
@@ -912,7 +949,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: create an user
+      description: create a user (BY SUPER-ADMIN)
       parameters:
       - description: create an user
         in: body
@@ -927,7 +964,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
-      summary: create an user
+      summary: create a user (BY SUPER-ADMIN)
       tags:
       - users
   /users/{id}:

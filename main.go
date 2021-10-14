@@ -13,7 +13,7 @@ import (
 
 // @title Bloggo API
 // @version 1.0
-// @description This is a headless content management system
+// @description Bloggo is a REST Api for blogging
 
 // @contact.name Hadekha Erfadila Fitra
 // @contact.email hdkef11@gmail.com

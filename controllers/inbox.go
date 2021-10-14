@@ -1,6 +1,14 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 type InboxCtl struct {
 }
@@ -17,7 +25,45 @@ type InboxCtl struct {
 // @Router /inboxes/{receiver-id} [get]
 func (c *InboxCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get last-id and limit from query and receiver-id from path
 
+		receiverID, err := strconv.Atoi(c.Params.ByName("receiver-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		lastID, err := strconv.Atoi(c.Query("last-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		limit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get all inboxes navigated by last-id and limit
+
+		var inboxMdl models.Inbox
+
+		inboxes, err := inboxMdl.GetAll(db, receiverID, lastID, limit)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		c.JSON(http.StatusOK, inboxes)
 	}
 }
 
@@ -33,7 +79,41 @@ func (c *InboxCtl) GetAll() gin.HandlerFunc {
 // @Router /inboxes/{receiver-id} [post]
 func (c *InboxCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get receiver-id from path
+		receiverID, err := strconv.Atoi(c.Params.ByName("receiver-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//decode payload
+		var inbox models.Inbox
+		err = json.NewDecoder(c.Request.Body).Decode(&inbox)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store to db
+		err = inbox.Post(db, uint(receiverID), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "inbox posted")
 	}
 }
 
@@ -49,7 +129,41 @@ func (c *InboxCtl) Post() gin.HandlerFunc {
 // @Router /inboxes/{id} [put]
 func (c *InboxCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//decode payload
+		var inbox models.Inbox
+		err = json.NewDecoder(c.Request.Body).Decode(&inbox)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store inbox to db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = inbox.Put(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "inbox edited")
 	}
 }
 
@@ -64,6 +178,35 @@ func (c *InboxCtl) Put() gin.HandlerFunc {
 // @Router /inboxes/{id} [delete]
 func (c *InboxCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var inboxMdl models.Inbox
+
+		//delete article from db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		err = inboxMdl.Delete(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		utils.ResponseOK(c, "inbox deleted")
 	}
 }

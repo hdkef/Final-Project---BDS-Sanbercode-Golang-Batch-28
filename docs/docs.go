@@ -1071,6 +1071,40 @@ var doc = `{
                 }
             }
         },
+        "/register": {
+            "post": {
+                "description": "send username, password, bio, and avatar url",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "register a regular user",
+                "parameters": [
+                    {
+                        "description": "create a regular user",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Register"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "get all users navigated by last-id and limit.",
@@ -1110,7 +1144,7 @@ var doc = `{
                 }
             },
             "post": {
-                "description": "create an user",
+                "description": "create a user (BY SUPER-ADMIN)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1120,7 +1154,7 @@ var doc = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "create an user",
+                "summary": "create a user (BY SUPER-ADMIN)",
                 "parameters": [
                     {
                         "description": "create an user",
@@ -1519,6 +1553,12 @@ var doc = `{
         "swagmodel.InputUser": {
             "type": "object",
             "properties": {
+                "avatarURL": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 },
@@ -1533,6 +1573,23 @@ var doc = `{
         "swagmodel.LoginPayload": {
             "type": "object",
             "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "swagmodel.Register": {
+            "type": "object",
+            "properties": {
+                "avatarURL": {
+                    "type": "string"
+                },
+                "bio": {
+                    "type": "string"
+                },
                 "password": {
                     "type": "string"
                 },
@@ -1621,7 +1678,7 @@ var SwaggerInfo = swaggerInfo{
 	BasePath:    "/api/v1",
 	Schemes:     []string{},
 	Title:       "Bloggo API",
-	Description: "This is a headless content management system",
+	Description: "Bloggo is a REST Api for blogging",
 }
 
 type s struct{}

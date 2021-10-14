@@ -44,7 +44,7 @@ func (m *Comment) Put(db *gorm.DB, id int, usr *User) error {
 		return err
 	}
 
-	//validate if usr.Role != "super-admin" then check if oldArticle.CreatorID == usr.ID
+	//validate if usr.Role != "super-admin" then check if oldComment.CreatorID == usr.ID
 	if usr.Role != "super-admin" {
 		if oldComment.CreatorID != usr.ID {
 			return errors.New("unauthorized")
@@ -60,7 +60,7 @@ func (m *Comment) Delete(db *gorm.DB, id int, usr *User) error {
 		return err
 	}
 
-	//validate if usr.Role != "super-admin" then check if oldArticle.CreatorID == usr.ID
+	//validate if usr.Role != "super-admin" then check if comment.CreatorID == usr.ID
 	if usr.Role != "super-admin" {
 		if comment.CreatorID != usr.ID {
 			return errors.New("unauthorized")
