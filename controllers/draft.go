@@ -1,6 +1,12 @@
 package controllers
 
 import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +24,21 @@ type DraftCtl struct {
 // @Router /drafts [get]
 func (c *DraftCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		var draftMdl models.Draft
+
+		drafts, err := draftMdl.GetAll(db)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, drafts)
 	}
 }
 
@@ -47,7 +67,33 @@ func (c *DraftCtl) GetOne() gin.HandlerFunc {
 // @Router /drafts [post]
 func (c *DraftCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var draft models.Draft
 
+		err := json.NewDecoder(c.Request.Body).Decode(&draft)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = draft.Post(db, &usr)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "draft created")
 	}
 }
 
@@ -63,7 +109,38 @@ func (c *DraftCtl) Post() gin.HandlerFunc {
 // @Router /drafts/{id} [put]
 func (c *DraftCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var draft models.Draft
 
+		err := json.NewDecoder(c.Request.Body).Decode(&draft)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = draft.Put(db, uint(id), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "draft updated")
 	}
 }
 
@@ -78,6 +155,31 @@ func (c *DraftCtl) Put() gin.HandlerFunc {
 // @Router /drafts/{id} [delete]
 func (c *DraftCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		var draftMdl models.Draft
+
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = draftMdl.Delete(db, uint(id), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "draft deleted")
 	}
 }
