@@ -75,8 +75,7 @@ func (m *Article) Put(db *gorm.DB, id uint, usr *User) error {
 		return err
 	}
 
-	res := db.Model(&oldArticle).Updates(*m)
-	return res.Error
+	return db.Model(&oldArticle).Updates(*m).Error
 }
 
 func (m *Article) Delete(db *gorm.DB, id uint, usr *User) error {

@@ -1,6 +1,14 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 type CommentCtl struct {
 }
@@ -17,9 +25,45 @@ type CommentCtl struct {
 // @Router /comments/{article-id} [get]
 func (c *CommentCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//get article-id, last-id, and limit
+		//get last-id and limit from query and article-id from path
+
+		articleID, err := strconv.Atoi(c.Params.ByName("article-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		lastID, err := strconv.Atoi(c.Query("last-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		limit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		//get all comments navigated by last-id and limit
+
+		var commentMdl models.Comment
+
+		comments, err := commentMdl.GetAll(db, articleID, lastID, limit)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		//send
+		c.JSON(http.StatusOK, comments)
 	}
 }
 
@@ -35,7 +79,41 @@ func (c *CommentCtl) GetAll() gin.HandlerFunc {
 // @Router /comments/{article-id} [post]
 func (c *CommentCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get article-id from path
+		articleID, err := strconv.Atoi(c.Params.ByName("article-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//decode payload
+		var comment models.Comment
+		err = json.NewDecoder(c.Request.Body).Decode(&comment)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store to db
+		err = comment.Post(db, uint(articleID), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "comment posted")
 	}
 }
 
@@ -51,7 +129,41 @@ func (c *CommentCtl) Post() gin.HandlerFunc {
 // @Router /comments/{id} [put]
 func (c *CommentCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//decode payload
+		var comment models.Comment
+		err = json.NewDecoder(c.Request.Body).Decode(&comment)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store comment to db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = comment.Put(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "comment updated")
 	}
 }
 
@@ -66,6 +178,35 @@ func (c *CommentCtl) Put() gin.HandlerFunc {
 // @Router /comments/{id} [delete]
 func (c *CommentCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var commentMdl models.Comment
+
+		//delete article from db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		err = commentMdl.Delete(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		utils.ResponseOK(c, "comment deleted")
 	}
 }
