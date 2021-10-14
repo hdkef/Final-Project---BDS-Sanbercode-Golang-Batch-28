@@ -15,10 +15,10 @@ type Draft struct {
 	Body      string `json:"body"`
 }
 
-func (m *Draft) GetAll(db *gorm.DB) ([]Draft, error) {
-	var drafts []Draft
-	res := db.Find(&drafts)
-	return drafts, res.Error
+func (m *Draft) GetAll(db *gorm.DB, lastid int, limit int) ([]Draft, error) {
+	var articles []Draft
+	res := db.Where("id > ?", lastid).Find(&articles).Limit(limit)
+	return articles, res.Error
 }
 
 func (m *Draft) GetOne(db *gorm.DB, id uint) (Draft, error) {
