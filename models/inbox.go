@@ -11,6 +11,7 @@ type Inbox struct {
 	CreatorID  uint   `json:"creator_id"`
 	ReceiverID uint   `json:"receiver_id"`
 	Body       string `json:"body"`
+	gorm.Model
 }
 
 func (m *Inbox) GetAll(db *gorm.DB, receiverid int, lastid int, limit int) ([]Inbox, error) {

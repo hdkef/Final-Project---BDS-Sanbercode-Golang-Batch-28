@@ -15,6 +15,7 @@ type User struct {
 	Role      string `json:"role"`
 	Bio       string `json:"bio"`
 	AvatarURL string `json:"avatar_url"`
+	gorm.Model
 }
 
 func (m *User) GetByUsername(db *gorm.DB) (User, error) {

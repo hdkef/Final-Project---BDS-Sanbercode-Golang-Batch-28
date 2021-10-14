@@ -13,6 +13,7 @@ type Draft struct {
 	Title     string `json:"title"`
 	ImageURL  string `json:"image_url"`
 	Body      string `json:"body"`
+	gorm.Model
 }
 
 func (m *Draft) GetAll(db *gorm.DB, lastid int, limit int) ([]Draft, error) {

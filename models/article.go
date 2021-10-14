@@ -13,6 +13,7 @@ type Article struct {
 	Title     string `json:"title"`
 	ImageURL  string `json:"image_url"`
 	Body      string `json:"body"`
+	gorm.Model
 }
 
 func (m *Article) GetAll(db *gorm.DB, lastid int, limit int) ([]Article, error) {

@@ -11,6 +11,7 @@ type Comment struct {
 	ArticleID uint   `json:"article_id"`
 	CreatorID uint   `json:"creator_id"`
 	Body      string `json:"body"`
+	gorm.Model
 }
 
 func (m *Comment) GetAll(db *gorm.DB, articleid int, lastid int, limit int) ([]Comment, error) {
