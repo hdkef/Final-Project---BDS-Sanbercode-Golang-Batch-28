@@ -65,6 +65,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an article",
                 "consumes": [
                     "application/json"
@@ -126,6 +131,11 @@ var doc = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an article",
                 "consumes": [
                     "application/json"
@@ -165,6 +175,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an article",
                 "consumes": [
                     "application/json"
@@ -197,6 +212,11 @@ var doc = `{
         },
         "/ch-pwd": {
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "send authorization header with password payload to change password",
                 "consumes": [
                     "application/json"
@@ -275,6 +295,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an comment",
                 "consumes": [
                     "application/json"
@@ -316,6 +341,11 @@ var doc = `{
         },
         "/comments/{id}": {
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an comment",
                 "consumes": [
                     "application/json"
@@ -355,6 +385,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an comment",
                 "consumes": [
                     "application/json"
@@ -424,6 +459,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an draft",
                 "consumes": [
                     "application/json"
@@ -485,6 +525,11 @@ var doc = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an draft",
                 "consumes": [
                     "application/json"
@@ -524,6 +569,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an draft",
                 "consumes": [
                     "application/json"
@@ -556,6 +606,11 @@ var doc = `{
         },
         "/inboxes/{id}": {
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an inbox",
                 "consumes": [
                     "application/json"
@@ -595,6 +650,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an inbox",
                 "consumes": [
                     "application/json"
@@ -671,6 +731,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an inbox",
                 "consumes": [
                     "application/json"
@@ -746,6 +811,11 @@ var doc = `{
         },
         "/media": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get all media navigated by last-id and limit.",
                 "produces": [
                     "application/json"
@@ -783,6 +853,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an media",
                 "consumes": [
                     "application/json"
@@ -817,6 +892,11 @@ var doc = `{
         },
         "/media/{id}": {
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an media",
                 "consumes": [
                     "application/json"
@@ -856,6 +936,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an media",
                 "consumes": [
                     "application/json"
@@ -932,6 +1017,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create an rating",
                 "consumes": [
                     "application/json"
@@ -1002,6 +1092,11 @@ var doc = `{
         },
         "/ratings/{id}": {
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an rating",
                 "consumes": [
                     "application/json"
@@ -1041,6 +1136,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an rating",
                 "consumes": [
                     "application/json"
@@ -1107,6 +1207,11 @@ var doc = `{
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get all users navigated by last-id and limit.",
                 "produces": [
                     "application/json"
@@ -1144,6 +1249,11 @@ var doc = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "create a user (BY SUPER-ADMIN)",
                 "consumes": [
                     "application/json"
@@ -1178,6 +1288,11 @@ var doc = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get detail of user specified by id",
                 "produces": [
                     "application/json"
@@ -1205,6 +1320,11 @@ var doc = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "update an user",
                 "consumes": [
                     "application/json"
@@ -1244,6 +1364,11 @@ var doc = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "delete an user",
                 "consumes": [
                     "application/json"
@@ -1611,50 +1736,10 @@ var doc = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
+        "AuthToken": {
             "type": "apiKey",
-            "name": "Authorization",
+            "name": "authorization",
             "in": "header"
-        },
-        "BasicAuth": {
-            "type": "basic"
-        },
-        "OAuth2AccessCode": {
-            "type": "oauth2",
-            "flow": "accessCode",
-            "authorizationUrl": "https://example.com/oauth/authorize",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information"
-            }
-        },
-        "OAuth2Application": {
-            "type": "oauth2",
-            "flow": "application",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "write": " Grants write access"
-            }
-        },
-        "OAuth2Implicit": {
-            "type": "oauth2",
-            "flow": "implicit",
-            "authorizationUrl": "https://example.com/oauth/authorize",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "write": " Grants write access"
-            }
-        },
-        "OAuth2Password": {
-            "type": "oauth2",
-            "flow": "password",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "read": " Grants read access",
-                "write": " Grants write access"
-            }
         }
     },
     "x-extension-openapi": {

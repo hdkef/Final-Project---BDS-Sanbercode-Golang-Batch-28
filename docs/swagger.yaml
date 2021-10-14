@@ -249,6 +249,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an article
       tags:
       - articles
@@ -270,6 +272,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an article
       tags:
       - articles
@@ -314,6 +318,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an article
       tags:
       - articles
@@ -336,6 +342,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: change user password
       tags:
       - auth
@@ -393,6 +401,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an comment
       tags:
       - comments
@@ -414,6 +424,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an comment
       tags:
       - comments
@@ -440,6 +452,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an comment
       tags:
       - comments
@@ -487,6 +501,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an draft
       tags:
       - drafts
@@ -508,6 +524,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an draft
       tags:
       - drafts
@@ -552,6 +570,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an draft
       tags:
       - drafts
@@ -573,6 +593,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an inbox
       tags:
       - inboxes
@@ -599,6 +621,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an inbox
       tags:
       - inboxes
@@ -656,6 +680,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an inbox
       tags:
       - inboxes
@@ -704,6 +730,8 @@ paths:
             items:
               $ref: '#/definitions/swagmodel.GetMedia'
             type: array
+      security:
+      - AuthToken: []
       summary: get all media
       tags:
       - media
@@ -725,6 +753,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an media
       tags:
       - media
@@ -746,6 +776,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an media
       tags:
       - media
@@ -772,6 +804,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an media
       tags:
       - media
@@ -829,6 +863,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create an rating
       tags:
       - ratings
@@ -869,6 +905,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an rating
       tags:
       - ratings
@@ -895,6 +933,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an rating
       tags:
       - ratings
@@ -943,6 +983,8 @@ paths:
             items:
               $ref: '#/definitions/swagmodel.GetUser'
             type: array
+      security:
+      - AuthToken: []
       summary: get all users
       tags:
       - users
@@ -964,6 +1006,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: create a user (BY SUPER-ADMIN)
       tags:
       - users
@@ -985,6 +1029,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: delete an user
       tags:
       - users
@@ -1003,6 +1049,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.GetUser'
+      security:
+      - AuthToken: []
       summary: get one user
       tags:
       - users
@@ -1029,6 +1077,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.Response'
+      security:
+      - AuthToken: []
       summary: update an user, only super-admin can update role
       tags:
       - users
@@ -1052,41 +1102,10 @@ paths:
       tags:
       - users
 securityDefinitions:
-  ApiKeyAuth:
+  AuthToken:
     in: header
-    name: Authorization
+    name: authorization
     type: apiKey
-  BasicAuth:
-    type: basic
-  OAuth2AccessCode:
-    authorizationUrl: https://example.com/oauth/authorize
-    flow: accessCode
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
-  OAuth2Application:
-    flow: application
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      write: ' Grants write access'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
-  OAuth2Implicit:
-    authorizationUrl: https://example.com/oauth/authorize
-    flow: implicit
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      write: ' Grants write access'
-    type: oauth2
-  OAuth2Password:
-    flow: password
-    scopes:
-      admin: ' Grants read and write access to administrative information'
-      read: ' Grants read access'
-      write: ' Grants write access'
-    tokenUrl: https://example.com/oauth/token
-    type: oauth2
 swagger: "2.0"
 x-extension-openapi:
   example: value on a json format

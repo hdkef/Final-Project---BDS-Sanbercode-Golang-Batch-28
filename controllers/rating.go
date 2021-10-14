@@ -22,6 +22,7 @@ func (c *RatingCtl) GetAll() gin.HandlerFunc {
 }
 
 // RatingPost godoc
+// @Security AuthToken
 // @Tags ratings
 // @Summary create an rating
 // @Description create an rating
@@ -38,6 +39,7 @@ func (c *RatingCtl) Post() gin.HandlerFunc {
 }
 
 // RatingPut godoc
+// @Security AuthToken
 // @Tags ratings
 // @Summary update an rating
 // @Description update an rating
@@ -54,6 +56,7 @@ func (c *RatingCtl) Put() gin.HandlerFunc {
 }
 
 // RatingDelete godoc
+// @Security AuthToken
 // @Tags ratings
 // @Summary delete an rating
 // @Description delete an rating

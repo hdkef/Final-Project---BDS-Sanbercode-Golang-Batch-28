@@ -68,6 +68,7 @@ func (c *CommentCtl) GetAll() gin.HandlerFunc {
 }
 
 // CommentPost godoc
+// @Security AuthToken
 // @Tags comments
 // @Summary create an comment
 // @Description create an comment
@@ -118,6 +119,7 @@ func (c *CommentCtl) Post() gin.HandlerFunc {
 }
 
 // CommentPut godoc
+// @Security AuthToken
 // @Tags comments
 // @Summary update an comment
 // @Description update an comment
@@ -168,6 +170,7 @@ func (c *CommentCtl) Put() gin.HandlerFunc {
 }
 
 // CommentDelete godoc
+// @Security AuthToken
 // @Tags comments
 // @Summary delete an comment
 // @Description delete an comment

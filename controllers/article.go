@@ -99,6 +99,7 @@ func (c *ArticleCtl) GetOne() gin.HandlerFunc {
 }
 
 // ArticlePost godoc
+// @Security AuthToken
 // @Tags articles
 // @Summary create an article
 // @Description create an article
@@ -146,6 +147,7 @@ func (c *ArticleCtl) Post() gin.HandlerFunc {
 }
 
 // ArticlePut godoc
+// @Security AuthToken
 // @Tags articles
 // @Summary update an article
 // @Description update an article
@@ -199,6 +201,7 @@ func (c *ArticleCtl) Put() gin.HandlerFunc {
 }
 
 // ArticleDelete godoc
+// @Security AuthToken
 // @Tags articles
 // @Summary delete an article
 // @Description delete an article

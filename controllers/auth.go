@@ -85,6 +85,7 @@ func (c *AuthCtl) Register() gin.HandlerFunc {
 }
 
 // AuthChPwd godoc
+// @Security AuthToken
 // @Tags auth
 // @Summary change user password
 // @Description send authorization header with password payload to change password

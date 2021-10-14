@@ -6,6 +6,7 @@ type MediaCtl struct {
 }
 
 // MediaGetAll godoc
+// @Security AuthToken
 // @Tags media
 // @Summary get all media
 // @Description get all media navigated by last-id and limit.
@@ -21,6 +22,7 @@ func (c *MediaCtl) GetAll() gin.HandlerFunc {
 }
 
 // mediaPost godoc
+// @Security AuthToken
 // @Tags media
 // @Summary create an media
 // @Description create an media
@@ -36,6 +38,7 @@ func (c *MediaCtl) Post() gin.HandlerFunc {
 }
 
 // MediaPut godoc
+// @Security AuthToken
 // @Tags media
 // @Summary update an media
 // @Description update an media
@@ -52,6 +55,7 @@ func (c *MediaCtl) Put() gin.HandlerFunc {
 }
 
 // MediaDelete godoc
+// @Security AuthToken
 // @Tags media
 // @Summary delete an media
 // @Description delete an media

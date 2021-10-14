@@ -68,6 +68,7 @@ func (c *InboxCtl) GetAll() gin.HandlerFunc {
 }
 
 // InboxPost godoc
+// @Security AuthToken
 // @Tags inboxes
 // @Summary create an inbox
 // @Description create an inbox
@@ -118,6 +119,7 @@ func (c *InboxCtl) Post() gin.HandlerFunc {
 }
 
 // InboxPut godoc
+// @Security AuthToken
 // @Tags inboxes
 // @Summary update an inbox
 // @Description update an inbox
@@ -168,6 +170,7 @@ func (c *InboxCtl) Put() gin.HandlerFunc {
 }
 
 // InboxDelete godoc
+// @Security AuthToken
 // @Tags inboxes
 // @Summary delete an inbox
 // @Description delete an inbox

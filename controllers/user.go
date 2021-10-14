@@ -6,6 +6,7 @@ type UserCtl struct {
 }
 
 // userGetAll godoc
+// @Security AuthToken
 // @Tags users
 // @Summary get all users
 // @Description get all users navigated by last-id and limit.
@@ -21,6 +22,7 @@ func (c *UserCtl) GetAll() gin.HandlerFunc {
 }
 
 // UserGetOne godoc
+// @Security AuthToken
 // @Tags users
 // @Summary get one user
 // @Description get detail of user specified by id
@@ -49,6 +51,7 @@ func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 }
 
 // UserPost godoc
+// @Security AuthToken
 // @Tags users
 // @Summary create a user (BY SUPER-ADMIN)
 // @Description create a user (BY SUPER-ADMIN)
@@ -64,6 +67,7 @@ func (c *UserCtl) Post() gin.HandlerFunc {
 }
 
 // UserPut godoc
+// @Security AuthToken
 // @Tags users
 // @Summary update an user, only super-admin can update role
 // @Description update an user
@@ -80,6 +84,7 @@ func (c *UserCtl) Put() gin.HandlerFunc {
 }
 
 // UserDelete godoc
+// @Security AuthToken
 // @Tags users
 // @Summary delete an user
 // @Description delete an user

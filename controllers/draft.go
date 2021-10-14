@@ -98,6 +98,7 @@ func (c *DraftCtl) GetOne() gin.HandlerFunc {
 }
 
 // DraftPost godoc
+// @Security AuthToken
 // @Tags drafts
 // @Summary create an draft
 // @Description create an draft
@@ -144,6 +145,7 @@ func (c *DraftCtl) Post() gin.HandlerFunc {
 }
 
 // DraftPut godoc
+// @Security AuthToken
 // @Tags drafts
 // @Summary update an draft
 // @Description update an draft
@@ -196,6 +198,7 @@ func (c *DraftCtl) Put() gin.HandlerFunc {
 }
 
 // DraftDelete godoc
+// @Security AuthToken
 // @Tags drafts
 // @Summary delete an draft
 // @Description delete an draft
