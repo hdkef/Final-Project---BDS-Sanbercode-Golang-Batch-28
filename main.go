@@ -130,6 +130,7 @@ func main() {
 		{
 			auth.POST("login", authCtl.Login())
 			auth.POST("register", authCtl.Register())
+			auth.POST("ch-pwd", authCtl.ChangePWD())
 		}
 		user := v1.Group("/users")
 		{

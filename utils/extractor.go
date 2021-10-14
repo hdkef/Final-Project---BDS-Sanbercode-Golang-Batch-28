@@ -18,7 +18,7 @@ func ExtractDB(c *gin.Context) (*gorm.DB, error) {
 }
 
 func ExtractUserContext(c *gin.Context) (models.User, error) {
-	usr, exist := c.Get(constantname.USER)
+	usr, exist := c.Get(constantname.USER_CTX)
 	if !exist {
 		return models.User{}, errors.New("user context doesn't exist")
 	}

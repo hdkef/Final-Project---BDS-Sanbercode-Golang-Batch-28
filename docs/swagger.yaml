@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  swagmodel.ChPwd:
+    properties:
+      password:
+        type: string
+    type: object
   swagmodel.GetArticle:
     properties:
       body:
@@ -297,6 +302,28 @@ paths:
       summary: update an article
       tags:
       - articles
+  /ch-pwd:
+    post:
+      consumes:
+      - application/json
+      description: send authorization header with password payload to change password
+      parameters:
+      - description: change password
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/swagmodel.ChPwd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/swagmodel.Response'
+      summary: change user password
+      tags:
+      - auth
   /comments/{article-id}:
     get:
       description: get all comments navigated by last-id and limit.

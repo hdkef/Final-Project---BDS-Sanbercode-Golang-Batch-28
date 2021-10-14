@@ -195,6 +195,40 @@ var doc = `{
                 }
             }
         },
+        "/ch-pwd": {
+            "post": {
+                "description": "send authorization header with password payload to change password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "change user password",
+                "parameters": [
+                    {
+                        "description": "change password",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.ChPwd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/swagmodel.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/comments/{article-id}": {
             "get": {
                 "description": "get all comments navigated by last-id and limit.",
@@ -1237,6 +1271,14 @@ var doc = `{
         }
     },
     "definitions": {
+        "swagmodel.ChPwd": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "swagmodel.GetArticle": {
             "type": "object",
             "properties": {

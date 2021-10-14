@@ -9,3 +9,7 @@ type LoginResponse struct {
 	TokenType string
 	Token     string
 }
+
+type ChPwd struct {
+	Password string
+}

@@ -1,27 +1,15 @@
 package controllers
 
 import (
+	constantname "bloggo/constantName"
 	"bloggo/models"
 	"bloggo/utils"
 	"encoding/json"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
-	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
-
-const TOKEN_TYPE_NEW = "new"
-const TOKEN_TYPE_REFRESH = "refresh"
-const TOKEN_EXP_IN_HOUR = 12
-
-func init() {
-	godotenv.Load()
-}
 
 type AuthCtl struct {
 }
@@ -50,14 +38,14 @@ func (c *AuthCtl) Login() gin.HandlerFunc {
 			return
 		}
 		//generate token
-		token, err := GenerateToken(db, usr)
+		token, err := utils.GenerateToken(db, usr)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 		//send response
 		c.JSON(http.StatusOK, models.LoginResponse{
-			TokenType: TOKEN_TYPE_NEW,
+			TokenType: constantname.TOKEN_TYPE_NEW,
 			Token:     token,
 		})
 	}
@@ -85,31 +73,68 @@ func (c *AuthCtl) Register() gin.HandlerFunc {
 	}
 }
 
+// ChPwdLogin godoc
+// @Tags auth
+// @Summary change user password
+// @Description send authorization header with password payload to change password
+// @Param  user body swagmodel.ChPwd true "change password"
+// @Accept json
+// @Produce  json
+// @Success 200 {object} swagmodel.Response
+// @Router /ch-pwd [post]
 func (c *AuthCtl) ChangePWD() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		data := struct {
+			Password string `json:"password"`
+		}{}
 
+		err := json.NewDecoder(c.Request.Body).Decode(&data)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//validate passwd
+		if data.Password == "" {
+			utils.ResponseError(c, http.StatusInternalServerError, "no password")
+			return
+		}
+
+		//get id from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		id := usr.ID
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var oldUser models.User
+		err = db.Where("id = ?", id).First(&oldUser).Error
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//hash password with bcrypt
+		hashedPass, err := bcrypt.GenerateFromPassword([]byte(data.Password), 5)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		res := db.Model(&oldUser).Updates(models.User{
+			Password: string(hashedPass),
+		})
+		if res.Error != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "password changed")
 	}
-}
-
-var SECRET string = os.Getenv("SECRET")
-
-func GenerateToken(db *gorm.DB, userFromPayload models.User) (string, error) {
-	//find user detail in db
-	userFromDB, err := userFromPayload.GetByUsername(db)
-	if err != nil {
-		return "", err
-	}
-	//compare db pass with payload pass
-	err = bcrypt.CompareHashAndPassword([]byte(userFromDB.Password), []byte(userFromPayload.Password))
-	if err != nil {
-		return "", err
-	}
-	//generate token
-	claims := jwt.MapClaims{}
-	claims["id"] = userFromDB.ID
-	claims["role"] = userFromDB.Role
-	claims["exp"] = time.Now().Add(TOKEN_EXP_IN_HOUR * time.Hour).Unix()
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	return token.SignedString([]byte(SECRET))
 }
