@@ -25,20 +25,38 @@ type ArticleCtl struct {
 func (c *ArticleCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		//get last-id and limit
+
+		lastID, err := strconv.Atoi(c.Query("last-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		limit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		db, err := utils.ExtractDB(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//get all articles navigated by last-id and limit
+
 		var articleMdl models.Article
 
-		articles, err := articleMdl.GetAll(db)
+		articles, err := articleMdl.GetAll(db, lastID, limit)
 
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		//send
 		c.JSON(http.StatusOK, articles)
 	}
 }
@@ -54,6 +72,29 @@ func (c *ArticleCtl) GetAll() gin.HandlerFunc {
 func (c *ArticleCtl) GetOne() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get article from db
+		var articleMdl models.Article
+		article, err := articleMdl.GetOne(db, uint(id))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		c.JSON(http.StatusOK, article)
 	}
 }
 
@@ -68,6 +109,8 @@ func (c *ArticleCtl) GetOne() gin.HandlerFunc {
 // @Router /articles [post]
 func (c *ArticleCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		//decode payload
 		var article models.Article
 
 		err := json.NewDecoder(c.Request.Body).Decode(&article)
@@ -82,18 +125,22 @@ func (c *ArticleCtl) Post() gin.HandlerFunc {
 			return
 		}
 
+		//get user detail from token
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//post to db
 		err = article.Post(db, &usr)
 
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		//send
 		utils.ResponseOK(c, "article created")
 	}
 }
@@ -111,8 +158,8 @@ func (c *ArticleCtl) Post() gin.HandlerFunc {
 func (c *ArticleCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		//decode payload
 		var article models.Article
-
 		err := json.NewDecoder(c.Request.Body).Decode(&article)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
@@ -125,23 +172,28 @@ func (c *ArticleCtl) Put() gin.HandlerFunc {
 			return
 		}
 
+		//get id from path
 		id, err := strconv.Atoi(c.Params.ByName("id"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//get user detail from token
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//update article to db
 		err = article.Put(db, uint(id), &usr)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		//send
 		utils.ResponseOK(c, "article updated")
 	}
 }
@@ -165,23 +217,28 @@ func (c *ArticleCtl) Delete() gin.HandlerFunc {
 
 		var articleMdl models.Article
 
+		//get id from path
 		id, err := strconv.Atoi(c.Params.ByName("id"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//get user detail from token
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 
+		//delete article from db
 		err = articleMdl.Delete(db, uint(id), &usr)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		//send
 		utils.ResponseOK(c, "article deleted")
 	}
 }

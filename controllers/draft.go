@@ -53,6 +53,29 @@ func (c *DraftCtl) GetAll() gin.HandlerFunc {
 func (c *DraftCtl) GetOne() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get draft from db
+		var draftMdl models.Draft
+		draft, err := draftMdl.GetOne(db, uint(id))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		c.JSON(http.StatusOK, draft)
 	}
 }
 

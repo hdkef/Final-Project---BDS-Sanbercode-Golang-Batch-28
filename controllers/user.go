@@ -50,8 +50,8 @@ func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 
 // UserPost godoc
 // @Tags users
-// @Summary create an user
-// @Description create an user
+// @Summary create a user (BY SUPER-ADMIN)
+// @Description create a user (BY SUPER-ADMIN)
 // @Param  user body swagmodel.InputUser true "create an user"
 // @Accept json
 // @Produce  json

@@ -21,6 +21,14 @@ func (m *Draft) GetAll(db *gorm.DB) ([]Draft, error) {
 	return drafts, res.Error
 }
 
+func (m *Draft) GetOne(db *gorm.DB, id uint) (Draft, error) {
+	var draft Draft
+	if err := db.Where("id = ?", id).First(&draft).Error; err != nil {
+		return Draft{}, err
+	}
+	return draft, nil
+}
+
 func (m *Draft) Post(db *gorm.DB, usr *User) error {
 
 	m.CreatorID = usr.ID

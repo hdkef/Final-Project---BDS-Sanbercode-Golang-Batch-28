@@ -18,7 +18,9 @@ type GetUserPublic struct {
 }
 
 type InputUser struct {
-	Username string
-	Password string
-	Role     string
+	Username  string
+	Password  string
+	Role      string
+	Bio       string
+	AvatarURL string
 }

@@ -10,6 +10,13 @@ type LoginResponse struct {
 	Token     string
 }
 
+type Register struct {
+	Username  string
+	Password  string
+	Bio       string
+	AvatarURL string
+}
+
 type ChPwd struct {
 	Password string
 }

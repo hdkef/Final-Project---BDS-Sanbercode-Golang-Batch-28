@@ -17,7 +17,9 @@ type CommentCtl struct {
 // @Router /comments/{article-id} [get]
 func (c *CommentCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		//get article-id, last-id, and limit
+		//get all comments navigated by last-id and limit
+		//send
 	}
 }
 

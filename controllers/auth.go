@@ -51,6 +51,15 @@ func (c *AuthCtl) Login() gin.HandlerFunc {
 	}
 }
 
+// AuthRegister godoc
+// @Tags auth
+// @Summary register a regular user
+// @Description send username, password, bio, and avatar url
+// @Param  user body swagmodel.Register true "create a regular user"
+// @Accept json
+// @Produce  json
+// @Success 200 {object} swagmodel.Response
+// @Router /register [post]
 func (c *AuthCtl) Register() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var usr models.User
@@ -64,6 +73,8 @@ func (c *AuthCtl) Register() gin.HandlerFunc {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+		//set user role to regular
+		usr.Role = "regular"
 		err = usr.Post(db)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
@@ -73,7 +84,7 @@ func (c *AuthCtl) Register() gin.HandlerFunc {
 	}
 }
 
-// ChPwdLogin godoc
+// AuthChPwd godoc
 // @Tags auth
 // @Summary change user password
 // @Description send authorization header with password payload to change password

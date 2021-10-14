@@ -15,10 +15,18 @@ type Article struct {
 	Body      string `json:"body"`
 }
 
-func (m *Article) GetAll(db *gorm.DB) ([]Article, error) {
+func (m *Article) GetAll(db *gorm.DB, lastid int, limit int) ([]Article, error) {
 	var articles []Article
-	res := db.Find(&articles)
+	res := db.Where("id > ?", lastid).Find(&articles).Limit(limit)
 	return articles, res.Error
+}
+
+func (m *Article) GetOne(db *gorm.DB, id uint) (Article, error) {
+	var article Article
+	if err := db.Where("id = ?", id).First(&article).Error; err != nil {
+		return Article{}, err
+	}
+	return article, nil
 }
 
 func (m *Article) Post(db *gorm.DB, usr *User) error {
