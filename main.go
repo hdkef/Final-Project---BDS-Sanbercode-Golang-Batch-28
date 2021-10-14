@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bloggo/config"
 	"bloggo/controllers"
 	docs "bloggo/docs"
+	"bloggo/middleware"
 
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -55,7 +57,18 @@ import (
 func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 
+	db, err := config.DBConn()
+	if err != nil {
+		panic(err)
+	}
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+
 	r := gin.Default()
+
+	//middleware
+	r.Use(middleware.DBMiddleware(db))
+	r.Use(middleware.JWTMiddleware)
 
 	authCtl := &controllers.AuthCtl{}
 	articleCtl := &controllers.ArticleCtl{}

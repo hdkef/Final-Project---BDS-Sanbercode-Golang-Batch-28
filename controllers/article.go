@@ -1,6 +1,14 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 type ArticleCtl struct {
 }
@@ -17,6 +25,21 @@ type ArticleCtl struct {
 func (c *ArticleCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var articleMdl models.Article
+
+		articles, err := articleMdl.GetAll(db)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		c.JSON(http.StatusOK, articles)
 	}
 }
 
@@ -45,7 +68,33 @@ func (c *ArticleCtl) GetOne() gin.HandlerFunc {
 // @Router /articles [post]
 func (c *ArticleCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var article models.Article
 
+		err := json.NewDecoder(c.Request.Body).Decode(&article)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = article.Post(db, &usr)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "article created")
 	}
 }
 
@@ -62,6 +111,38 @@ func (c *ArticleCtl) Post() gin.HandlerFunc {
 func (c *ArticleCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		var article models.Article
+
+		err := json.NewDecoder(c.Request.Body).Decode(&article)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = article.Put(db, uint(id), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "article updated")
 	}
 }
 
@@ -76,6 +157,31 @@ func (c *ArticleCtl) Put() gin.HandlerFunc {
 // @Router /articles/{id} [delete]
 func (c *ArticleCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		var articleMdl models.Article
+
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = articleMdl.Delete(db, uint(id), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "article deleted")
 	}
 }

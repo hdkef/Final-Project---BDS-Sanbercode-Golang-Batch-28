@@ -1,6 +1,6 @@
 package models
 
 type Response struct {
-	Success bool
-	Msg     string
+	Success bool   `json:"success"`
+	Msg     string `json:"msg"`
 }

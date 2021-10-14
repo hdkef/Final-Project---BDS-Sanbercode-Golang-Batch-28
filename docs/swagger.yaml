@@ -169,13 +169,6 @@ definitions:
       username:
         type: string
     type: object
-  swagmodel.LoginResponse:
-    properties:
-      token:
-        type: string
-      tokenType:
-        type: string
-    type: object
   swagmodel.Response:
     properties:
       msg:
@@ -628,7 +621,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: send username and password to get JWT Token
+      description: send username and password to get JWT Token via cookie
       parameters:
       - description: create an user
         in: body
@@ -642,7 +635,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/swagmodel.LoginResponse'
+            $ref: '#/definitions/swagmodel.Response'
       summary: send username and password to get JWT Token
       tags:
       - auth

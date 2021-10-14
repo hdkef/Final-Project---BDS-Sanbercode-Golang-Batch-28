@@ -678,7 +678,7 @@ var doc = `{
         },
         "/login": {
             "post": {
-                "description": "send username and password to get JWT Token",
+                "description": "send username and password to get JWT Token via cookie",
                 "consumes": [
                     "application/json"
                 ],
@@ -704,7 +704,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/swagmodel.LoginResponse"
+                            "$ref": "#/definitions/swagmodel.Response"
                         }
                     }
                 }
@@ -1495,17 +1495,6 @@ var doc = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "swagmodel.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                },
-                "tokenType": {
                     "type": "string"
                 }
             }

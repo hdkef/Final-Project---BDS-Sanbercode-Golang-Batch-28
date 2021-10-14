@@ -1,7 +1,7 @@
 package models
 
 type Rating struct {
-	ID        uint
-	ArticleID uint
-	Star      uint
+	ID        uint `json:"id"`
+	ArticleID uint `json:"article_id"`
+	Star      uint `json:"star"`
 }

@@ -1,9 +1,9 @@
 package models
 
 type Media struct {
-	ID        uint
-	CreatorID uint
-	Caption   string
-	Alt       string
-	Url       string
+	ID        uint   `json:"id"`
+	CreatorID uint   `json:"creator_id"`
+	Caption   string `json:"caption"`
+	Alt       string `json:"alt"`
+	Url       string `json:"url"`
 }
