@@ -224,6 +224,24 @@ func (c *RatingCtl) Delete() gin.HandlerFunc {
 // @Router /ratings/{article-id}/sum [get]
 func (c *RatingCtl) GetSum() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//TOBE IMPLEMENTED
+		//get article-id from path
+		articleID, err := strconv.Atoi(c.Params.ByName("article-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		var ratingMdl models.Rating
+		ratingSum, err := ratingMdl.GetSum(db, articleID)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//send
+		c.JSON(http.StatusOK, ratingSum)
 	}
 }

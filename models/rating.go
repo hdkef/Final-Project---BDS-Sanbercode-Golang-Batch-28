@@ -14,6 +14,11 @@ type Rating struct {
 	gorm.Model
 }
 
+type RatingSum struct {
+	ArticleID uint
+	AvgStar   float64
+}
+
 func (m *Rating) GetAll(db *gorm.DB, articleid int, lastid int, limit int) ([]Rating, error) {
 	var ratings []Rating
 	res := db.Where("article_id = ? AND id > ?", articleid, lastid).Find(&ratings).Limit(limit)
@@ -74,4 +79,16 @@ func (m *Rating) Delete(db *gorm.DB, id int, usr *User) error {
 		return errors.New("unauthorized")
 	}
 	return db.Delete(&rating).Error
+}
+
+func (m *Rating) GetSum(db *gorm.DB, articleid int) (RatingSum, error) {
+	var ratingSum RatingSum = RatingSum{
+		ArticleID: uint(articleid),
+	}
+	row := db.Table("ratings").Where("article_id = ? AND deleted_at IS NULL", articleid).Select("avg(star)").Row()
+	err := row.Scan(&ratingSum.AvgStar)
+	if err != nil {
+		return RatingSum{}, err
+	}
+	return ratingSum, nil
 }
