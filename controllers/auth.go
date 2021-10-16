@@ -75,7 +75,10 @@ func (c *AuthCtl) Register() gin.HandlerFunc {
 		}
 		//set user role to regular
 		usr.Role = "regular"
-		err = usr.Post(db)
+		//bypass authentication so that new user can register without super-admin
+		err = usr.Post(db, &models.User{
+			Role: "super-admin",
+		})
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return

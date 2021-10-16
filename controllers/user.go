@@ -25,19 +25,41 @@ type UserCtl struct {
 // @Router /users [get]
 func (c *UserCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//auth for role super-admin
+
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if usr.Role != "super-admin" {
-			utils.ResponseError(c, http.StatusInternalServerError, "not super admin")
+
+		lastID, err := strconv.Atoi(c.Query("last-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		limit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var usrModel models.User
 		//get user from db
+		users, err := usrModel.GetAll(db, &usr, lastID, limit)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
 		//send
+		c.JSON(http.StatusOK, users)
 	}
 }
 
@@ -58,19 +80,26 @@ func (c *UserCtl) GetOne() gin.HandlerFunc {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		//auth for id == usr.ID or role == super-admin
+
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if usr.ID != uint(id) || usr.Role != "super-admin" {
-			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 		//get user from db
-
+		var usrModel models.User
+		user, err := usrModel.GetOne(db, &usr, uint(id))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 		//send
+		c.JSON(http.StatusOK, user)
 	}
 }
 
@@ -85,16 +114,25 @@ func (c *UserCtl) GetOne() gin.HandlerFunc {
 func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//get id from path
-		// id, err := strconv.Atoi(c.Params.ByName("id"))
-		// if err != nil {
-		// 	utils.ResponseError(c, http.StatusInternalServerError, err.Error())
-		// 	return
-		// }
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 		//get user from db
-
-		//set sensitive information = null
-
+		var usrModel models.User
+		user, err := usrModel.GetOnePublic(db, uint(id))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 		//send
+		c.JSON(http.StatusOK, user)
 	}
 }
 
@@ -110,26 +148,33 @@ func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 // @Router /users [post]
 func (c *UserCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//auth role == super-admin
+		//decode
+		var data models.User
+		err := json.NewDecoder(c.Request.Body).Decode(&data)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if usr.Role != "super-admin" {
-			utils.ResponseError(c, http.StatusInternalServerError, "not super-admin")
-			return
-		}
-		//decode
-		var data models.User
-		err = json.NewDecoder(c.Request.Body).Decode(&data)
+		db, err := utils.ExtractDB(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 		//store to db
+		err = data.Post(db, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
 		//send
+		utils.ResponseOK(c, "user saved")
 	}
 }
 
@@ -146,31 +191,36 @@ func (c *UserCtl) Post() gin.HandlerFunc {
 // @Router /users/{id} [put]
 func (c *UserCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//decode
+		var data models.User
+		err := json.NewDecoder(c.Request.Body).Decode(&data)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 		//get id from path
 		id, err := strconv.Atoi(c.Params.ByName("id"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		//auth for id == usr.ID or role == super-admin
+
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if usr.ID != uint(id) || usr.Role != "super-admin" {
-			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
-			return
-		}
-		//decode
-		var data models.User
-		err = json.NewDecoder(c.Request.Body).Decode(&data)
+
+		db, err := utils.ExtractDB(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
+
 		//store to db
+		data.Put(db, &usr, uint(id))
 		//send
+		utils.ResponseOK(c, "user edited")
 	}
 }
 
@@ -192,18 +242,21 @@ func (c *UserCtl) Delete() gin.HandlerFunc {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		//auth for id == usr.ID or role == super-admin
+
 		usr, err := utils.ExtractUserContext(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if usr.ID != uint(id) || usr.Role != "super-admin" {
-			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
 		//delete to db
-
+		var userMdl models.User
+		userMdl.Delete(db, &usr, uint(id))
 		//send
+		utils.ResponseOK(c, "user deleted")
 	}
 }
