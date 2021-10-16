@@ -1,6 +1,14 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 type RatingCtl struct {
 }
@@ -17,7 +25,45 @@ type RatingCtl struct {
 // @Router /ratings/{article-id} [get]
 func (c *RatingCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get last-id and limit from query and article-id from path
 
+		articleID, err := strconv.Atoi(c.Params.ByName("article-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		lastID, err := strconv.Atoi(c.Query("last-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		limit, err := strconv.Atoi(c.Query("limit"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get all ratings navigated by last-id and limit
+
+		var ratingMdl models.Rating
+
+		ratings, err := ratingMdl.GetAll(db, articleID, lastID, limit)
+
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		c.JSON(http.StatusOK, ratings)
 	}
 }
 
@@ -34,7 +80,41 @@ func (c *RatingCtl) GetAll() gin.HandlerFunc {
 // @Router /ratings/{article-id} [post]
 func (c *RatingCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get article-id from path
+		articleID, err := strconv.Atoi(c.Params.ByName("article-id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//decode payload
+		var rating models.Rating
+		err = json.NewDecoder(c.Request.Body).Decode(&rating)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store to db
+		err = rating.Post(db, uint(articleID), &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "rating posted")
 	}
 }
 
@@ -51,7 +131,41 @@ func (c *RatingCtl) Post() gin.HandlerFunc {
 // @Router /ratings/{id} [put]
 func (c *RatingCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//decode payload
+		var rating models.Rating
+		err = json.NewDecoder(c.Request.Body).Decode(&rating)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//store rating to db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		err = rating.Put(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		utils.ResponseOK(c, "rating edited")
 	}
 }
 
@@ -67,7 +181,36 @@ func (c *RatingCtl) Put() gin.HandlerFunc {
 // @Router /ratings/{id} [delete]
 func (c *RatingCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		var ratingMdl models.Rating
+
+		//delete article from db
+		db, err := utils.ExtractDB(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		err = ratingMdl.Delete(db, id, &usr)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		//send
+		utils.ResponseOK(c, "rating deleted")
 	}
 }
 
@@ -81,6 +224,6 @@ func (c *RatingCtl) Delete() gin.HandlerFunc {
 // @Router /ratings/{article-id}/sum [get]
 func (c *RatingCtl) GetSum() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		//TOBE IMPLEMENTED
 	}
 }

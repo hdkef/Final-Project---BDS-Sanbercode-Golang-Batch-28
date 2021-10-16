@@ -1,6 +1,14 @@
 package controllers
 
-import "github.com/gin-gonic/gin"
+import (
+	"bloggo/models"
+	"bloggo/utils"
+	"encoding/json"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 type UserCtl struct {
 }
@@ -17,7 +25,19 @@ type UserCtl struct {
 // @Router /users [get]
 func (c *UserCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//auth for role super-admin
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if usr.Role != "super-admin" {
+			utils.ResponseError(c, http.StatusInternalServerError, "not super admin")
+			return
+		}
+		//get user from db
 
+		//send
 	}
 }
 
@@ -32,7 +52,25 @@ func (c *UserCtl) GetAll() gin.HandlerFunc {
 // @Router /users/{id} [get]
 func (c *UserCtl) GetOne() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//auth for id == usr.ID or role == super-admin
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if usr.ID != uint(id) || usr.Role != "super-admin" {
+			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
+			return
+		}
+		//get user from db
 
+		//send
 	}
 }
 
@@ -46,7 +84,17 @@ func (c *UserCtl) GetOne() gin.HandlerFunc {
 // @Router /users/{id}/public [get]
 func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		// id, err := strconv.Atoi(c.Params.ByName("id"))
+		// if err != nil {
+		// 	utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+		// 	return
+		// }
+		//get user from db
 
+		//set sensitive information = null
+
+		//send
 	}
 }
 
@@ -62,7 +110,26 @@ func (c *UserCtl) GetOnePublic() gin.HandlerFunc {
 // @Router /users [post]
 func (c *UserCtl) Post() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//auth role == super-admin
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if usr.Role != "super-admin" {
+			utils.ResponseError(c, http.StatusInternalServerError, "not super-admin")
+			return
+		}
+		//decode
+		var data models.User
+		err = json.NewDecoder(c.Request.Body).Decode(&data)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//store to db
 
+		//send
 	}
 }
 
@@ -79,7 +146,31 @@ func (c *UserCtl) Post() gin.HandlerFunc {
 // @Router /users/{id} [put]
 func (c *UserCtl) Put() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//auth for id == usr.ID or role == super-admin
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if usr.ID != uint(id) || usr.Role != "super-admin" {
+			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
+			return
+		}
+		//decode
+		var data models.User
+		err = json.NewDecoder(c.Request.Body).Decode(&data)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//store to db
+		//send
 	}
 }
 
@@ -95,6 +186,24 @@ func (c *UserCtl) Put() gin.HandlerFunc {
 // @Router /users/{id} [delete]
 func (c *UserCtl) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		//get id from path
+		id, err := strconv.Atoi(c.Params.ByName("id"))
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//auth for id == usr.ID or role == super-admin
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		if usr.ID != uint(id) || usr.Role != "super-admin" {
+			utils.ResponseError(c, http.StatusInternalServerError, "unauthorized access")
+			return
+		}
+		//delete to db
 
+		//send
 	}
 }
