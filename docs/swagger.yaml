@@ -181,15 +181,6 @@ definitions:
         example: nice article m8!
         type: string
     type: object
-  swagmodel.InputMedia:
-    properties:
-      alt:
-        type: string
-      caption:
-        type: string
-      url:
-        type: string
-    type: object
   swagmodel.InputRating:
     properties:
       star:
@@ -788,15 +779,21 @@ paths:
       - media
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: create an media
       parameters:
-      - description: create an media
-        in: body
-        name: media
-        required: true
-        schema:
-          $ref: '#/definitions/swagmodel.InputMedia'
+      - format: string
+        in: formData
+        name: alt
+        type: string
+      - format: string
+        in: formData
+        name: caption
+        type: string
+      - format: binary
+        in: formData
+        name: file
+        type: string
       produces:
       - application/json
       responses:

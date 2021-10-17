@@ -9,7 +9,7 @@ type GetMedia struct {
 }
 
 type InputMedia struct {
-	Caption string
-	Alt     string
-	Url     string
+	Caption string `json:"caption" form:"caption" format:"string"`
+	Alt     string `json:"alt" form:"alt" format:"string"`
+	File    string `json:"file" form:"file" format:"binary"`
 }

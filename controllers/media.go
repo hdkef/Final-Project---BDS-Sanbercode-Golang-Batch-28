@@ -76,8 +76,8 @@ func (c *MediaCtl) GetAll() gin.HandlerFunc {
 // @Tags media
 // @Summary create an media
 // @Description create an media
-// @Param  media body swagmodel.InputMedia true "create an media"
-// @Accept json
+// @Accept multipart/form-data
+// @Param payload formData swagmodel.InputMedia true "form data"
 // @Produce  json
 // @Success 200 {object} swagmodel.Response
 // @Router /media [post]

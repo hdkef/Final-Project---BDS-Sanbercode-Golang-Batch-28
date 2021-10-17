@@ -860,7 +860,7 @@ var doc = `{
                 ],
                 "description": "create an media",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -871,13 +871,22 @@ var doc = `{
                 "summary": "create an media",
                 "parameters": [
                     {
-                        "description": "create an media",
-                        "name": "media",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/swagmodel.InputMedia"
-                        }
+                        "type": "string",
+                        "format": "string",
+                        "name": "alt",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "string",
+                        "name": "caption",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "format": "binary",
+                        "name": "file",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -1640,20 +1649,6 @@ var doc = `{
                 "body": {
                     "type": "string",
                     "example": "nice article m8!"
-                }
-            }
-        },
-        "swagmodel.InputMedia": {
-            "type": "object",
-            "properties": {
-                "alt": {
-                    "type": "string"
-                },
-                "caption": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
                 }
             }
         },
