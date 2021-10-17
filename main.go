@@ -92,7 +92,6 @@ func main() {
 		{
 			media.GET("", mediaCtl.GetAll())
 			media.POST("", mediaCtl.Post())
-			media.PUT(":id", mediaCtl.Put())
 			media.DELETE(":id", mediaCtl.Delete())
 		}
 		rating := v1.Group("/ratings")
