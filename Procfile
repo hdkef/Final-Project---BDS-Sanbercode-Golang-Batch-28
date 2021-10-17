@@ -1,1 +1,1 @@
-web: bin/thebloggo
+web: bin/bloggo
