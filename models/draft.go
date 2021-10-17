@@ -16,15 +16,15 @@ type Draft struct {
 	gorm.Model
 }
 
-func (m *Draft) GetAll(db *gorm.DB, lastid int, limit int) ([]Draft, error) {
-	var articles []Draft
-	res := db.Where("id > ?", lastid).Find(&articles).Limit(limit)
-	return articles, res.Error
+func (m *Draft) GetAll(db *gorm.DB, lastid int, limit int, usr *User) ([]Draft, error) {
+	var drafts []Draft
+	res := db.Where("id > ? AND creator_id = ?", lastid, usr.ID).Find(&drafts).Limit(limit)
+	return drafts, res.Error
 }
 
-func (m *Draft) GetOne(db *gorm.DB, id uint) (Draft, error) {
+func (m *Draft) GetOne(db *gorm.DB, id uint, usr *User) (Draft, error) {
 	var draft Draft
-	if err := db.Where("id = ?", id).First(&draft).Error; err != nil {
+	if err := db.Where("id = ? AND creator_id = ?", id, usr.ID).First(&draft).Error; err != nil {
 		return Draft{}, err
 	}
 	return draft, nil

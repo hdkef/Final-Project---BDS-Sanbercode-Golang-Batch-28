@@ -14,6 +14,7 @@ type DraftCtl struct {
 }
 
 // DraftGetAll godoc
+// @Security AuthToken
 // @Tags drafts
 // @Summary get all drafts
 // @Description get all drafts navigated by last-id and limit.
@@ -44,11 +45,18 @@ func (c *DraftCtl) GetAll() gin.HandlerFunc {
 			return
 		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		//get all drafts navigated by last-id and limit
 
 		var draftMdl models.Draft
 
-		drafts, err := draftMdl.GetAll(db, lastID, limit)
+		drafts, err := draftMdl.GetAll(db, lastID, limit, &usr)
 
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
@@ -61,6 +69,7 @@ func (c *DraftCtl) GetAll() gin.HandlerFunc {
 }
 
 // DraftGetOne godoc
+// @Security AuthToken
 // @Tags drafts
 // @Summary get one draft
 // @Description get detail of draft specified by id
@@ -84,9 +93,16 @@ func (c *DraftCtl) GetOne() gin.HandlerFunc {
 			return
 		}
 
+		//get user detail from token
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		//get draft from db
 		var draftMdl models.Draft
-		draft, err := draftMdl.GetOne(db, uint(id))
+		draft, err := draftMdl.GetOne(db, uint(id), &usr)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
