@@ -1390,7 +1390,8 @@ var doc = `{
             "type": "object",
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "anothersuperhardpassword"
                 }
             }
         },
@@ -1398,36 +1399,45 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "\u003ch1\u003eREVIEW JOHN WICK\u003c/h1\u003eHello guys\u003cbr\u003e...dst"
                 },
-                "creatorID": {
-                    "type": "integer"
+                "creator_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
-                "imageURL": {
-                    "type": "string"
+                "image_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Review John Wick"
                 }
             }
         },
         "swagmodel.GetComment": {
             "type": "object",
             "properties": {
-                "articleID": {
-                    "type": "integer"
+                "article_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "this is fun to read \u003e_\u003c"
                 },
-                "creatorID": {
-                    "type": "integer"
+                "creator_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -1435,19 +1445,24 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "\u003ch1\u003eREVIEW JOHN WICK\u003c/h1\u003eHello guys\u003cbr\u003e...dst"
                 },
-                "creatorID": {
-                    "type": "integer"
+                "creator_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
-                "imageURL": {
-                    "type": "string"
+                "image_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Review John Wick"
                 }
             }
         },
@@ -1455,16 +1470,20 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "nice article m8!"
                 },
-                "creatorID": {
-                    "type": "integer"
+                "creator_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
-                "receiverID": {
-                    "type": "integer"
+                "receiver_id": {
+                    "type": "integer",
+                    "example": 2
                 }
             }
         },
@@ -1491,71 +1510,84 @@ var doc = `{
         "swagmodel.GetRating": {
             "type": "object",
             "properties": {
-                "articleID": {
-                    "type": "integer"
+                "article_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
-                "star": {
-                    "type": "integer"
+                "sta": {
+                    "type": "integer",
+                    "example": 5
                 }
             }
         },
         "swagmodel.GetRatingSum": {
             "type": "object",
             "properties": {
-                "articleID": {
-                    "type": "integer"
+                "article_id": {
+                    "type": "integer",
+                    "example": 1
                 },
-                "avgStar": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
+                "avgstar": {
+                    "type": "integer",
+                    "example": 5
                 }
             }
         },
         "swagmodel.GetUser": {
             "type": "object",
             "properties": {
-                "avatarURL": {
-                    "type": "string"
+                "avatar_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "i am admin"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "superhardpassword"
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "regular"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 }
             }
         },
         "swagmodel.GetUserPublic": {
             "type": "object",
             "properties": {
-                "avatarURL": {
-                    "type": "string"
+                "avatar_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "i am admin"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "regular"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 }
             }
         },
@@ -1563,13 +1595,16 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "\u003ch1\u003eREVIEW JOHN WICK\u003c/h1\u003eHello guys\u003cbr\u003e...dst"
                 },
-                "imageURL": {
-                    "type": "string"
+                "image_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Review John Wick"
                 }
             }
         },
@@ -1577,7 +1612,8 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "this is fun to read \u003e_\u003c"
                 }
             }
         },
@@ -1585,19 +1621,16 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "\u003ch1\u003eREVIEW JOHN WICK\u003c/h1\u003eHello guys\u003cbr\u003e...dst"
                 },
-                "creatorID": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "imageURL": {
-                    "type": "string"
+                "image_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Review John Wick"
                 }
             }
         },
@@ -1605,7 +1638,8 @@ var doc = `{
             "type": "object",
             "properties": {
                 "body": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "nice article m8!"
                 }
             }
         },
@@ -1627,27 +1661,33 @@ var doc = `{
             "type": "object",
             "properties": {
                 "star": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 5
                 }
             }
         },
         "swagmodel.InputUser": {
             "type": "object",
             "properties": {
-                "avatarURL": {
-                    "type": "string"
+                "avatar_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "i am admin"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "superhardpassword"
                 },
                 "role": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "regular"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 }
             }
         },
@@ -1655,27 +1695,33 @@ var doc = `{
             "type": "object",
             "properties": {
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "superhardpassword"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "adm"
                 }
             }
         },
         "swagmodel.Register": {
             "type": "object",
             "properties": {
-                "avatarURL": {
-                    "type": "string"
+                "avatar_url": {
+                    "type": "string",
+                    "example": "https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg"
                 },
                 "bio": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "i am admin"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "superhardpassword"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "adm"
                 }
             }
         },
@@ -1683,10 +1729,12 @@ var doc = `{
             "type": "object",
             "properties": {
                 "msg": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "article posted"
                 },
                 "success": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 }
             }
         }

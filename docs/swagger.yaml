@@ -3,54 +3,73 @@ definitions:
   swagmodel.ChPwd:
     properties:
       password:
+        example: anothersuperhardpassword
         type: string
     type: object
   swagmodel.GetArticle:
     properties:
       body:
+        example: <h1>REVIEW JOHN WICK</h1>Hello guys<br>...dst
         type: string
-      creatorID:
+      creator_id:
+        example: 1
         type: integer
       id:
+        example: 1
         type: integer
-      imageURL:
+      image_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       title:
+        example: Review John Wick
         type: string
     type: object
   swagmodel.GetComment:
     properties:
-      articleID:
+      article_id:
+        example: 1
         type: integer
       body:
+        example: this is fun to read >_<
         type: string
-      creatorID:
+      creator_id:
+        example: 1
         type: integer
       id:
+        example: 1
         type: integer
     type: object
   swagmodel.GetDraft:
     properties:
       body:
+        example: <h1>REVIEW JOHN WICK</h1>Hello guys<br>...dst
         type: string
-      creatorID:
+      creator_id:
+        example: 1
         type: integer
       id:
+        example: 1
         type: integer
-      imageURL:
+      image_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       title:
+        example: Review John Wick
         type: string
     type: object
   swagmodel.GetInbox:
     properties:
       body:
+        example: nice article m8!
         type: string
-      creatorID:
+      creator_id:
+        example: 1
         type: integer
       id:
+        example: 1
         type: integer
-      receiverID:
+      receiver_id:
+        example: 2
         type: integer
     type: object
   swagmodel.GetMedia:
@@ -68,80 +87,98 @@ definitions:
     type: object
   swagmodel.GetRating:
     properties:
-      articleID:
+      article_id:
+        example: 1
         type: integer
       id:
+        example: 1
         type: integer
-      star:
+      sta:
+        example: 5
         type: integer
     type: object
   swagmodel.GetRatingSum:
     properties:
-      articleID:
+      article_id:
+        example: 1
         type: integer
-      avgStar:
-        type: integer
-      id:
+      avgstar:
+        example: 5
         type: integer
     type: object
   swagmodel.GetUser:
     properties:
-      avatarURL:
+      avatar_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       bio:
+        example: i am admin
         type: string
       id:
+        example: 1
         type: integer
       password:
+        example: superhardpassword
         type: string
       role:
+        example: regular
         type: string
       username:
+        example: admin
         type: string
     type: object
   swagmodel.GetUserPublic:
     properties:
-      avatarURL:
+      avatar_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       bio:
+        example: i am admin
         type: string
       id:
+        example: 1
         type: integer
       role:
+        example: regular
         type: string
       username:
+        example: admin
         type: string
     type: object
   swagmodel.InputArticle:
     properties:
       body:
+        example: <h1>REVIEW JOHN WICK</h1>Hello guys<br>...dst
         type: string
-      imageURL:
+      image_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       title:
+        example: Review John Wick
         type: string
     type: object
   swagmodel.InputComment:
     properties:
       body:
+        example: this is fun to read >_<
         type: string
     type: object
   swagmodel.InputDraft:
     properties:
       body:
+        example: <h1>REVIEW JOHN WICK</h1>Hello guys<br>...dst
         type: string
-      creatorID:
-        type: integer
-      id:
-        type: integer
-      imageURL:
+      image_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       title:
+        example: Review John Wick
         type: string
     type: object
   swagmodel.InputInbox:
     properties:
       body:
+        example: nice article m8!
         type: string
     type: object
   swagmodel.InputMedia:
@@ -156,44 +193,58 @@ definitions:
   swagmodel.InputRating:
     properties:
       star:
+        example: 5
         type: integer
     type: object
   swagmodel.InputUser:
     properties:
-      avatarURL:
+      avatar_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       bio:
+        example: i am admin
         type: string
       password:
+        example: superhardpassword
         type: string
       role:
+        example: regular
         type: string
       username:
+        example: admin
         type: string
     type: object
   swagmodel.LoginPayload:
     properties:
       password:
+        example: superhardpassword
         type: string
       username:
+        example: adm
         type: string
     type: object
   swagmodel.Register:
     properties:
-      avatarURL:
+      avatar_url:
+        example: https://pbs.twimg.com/profile_images/1363210545118150659/Uo-XiGtv_400x400.jpg
         type: string
       bio:
+        example: i am admin
         type: string
       password:
+        example: superhardpassword
         type: string
       username:
+        example: adm
         type: string
     type: object
   swagmodel.Response:
     properties:
       msg:
+        example: article posted
         type: string
       success:
+        example: true
         type: boolean
     type: object
 host: localhost:8080
