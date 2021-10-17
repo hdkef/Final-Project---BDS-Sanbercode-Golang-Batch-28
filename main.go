@@ -5,11 +5,17 @@ import (
 	"bloggo/controllers"
 	docs "bloggo/docs"
 	"bloggo/middleware"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
+
+func init() {
+	godotenv.Load()
+}
 
 // @title Bloggo API
 // @version 1.0
@@ -33,6 +39,7 @@ import (
 
 func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Host = os.Getenv("SWAGHOST")
 
 	db, err := config.DBConn()
 	if err != nil {
@@ -120,5 +127,5 @@ func main() {
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.Run(":8080")
+	r.Run()
 }

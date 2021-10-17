@@ -877,50 +877,6 @@
             }
         },
         "/media/{id}": {
-            "put": {
-                "security": [
-                    {
-                        "AuthToken": []
-                    }
-                ],
-                "description": "update an media",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "media"
-                ],
-                "summary": "update an media",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID of media",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "update an media",
-                        "name": "media",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/swagmodel.InputMedia"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/swagmodel.Response"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "security": [
                     {

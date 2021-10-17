@@ -781,34 +781,6 @@ paths:
       summary: delete an media
       tags:
       - media
-    put:
-      consumes:
-      - application/json
-      description: update an media
-      parameters:
-      - description: ID of media
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: update an media
-        in: body
-        name: media
-        required: true
-        schema:
-          $ref: '#/definitions/swagmodel.InputMedia'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/swagmodel.Response'
-      security:
-      - AuthToken: []
-      summary: update an media
-      tags:
-      - media
   /ratings/{article-id}:
     get:
       description: get all ratings navigated by last-id and limit.

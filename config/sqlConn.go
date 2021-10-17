@@ -2,11 +2,10 @@ package config
 
 import (
 	"bloggo/models"
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -19,11 +18,12 @@ func DBConn() (*gorm.DB, error) {
 	var username string = os.Getenv("DBUSER")
 	var password string = os.Getenv("DBPWD")
 	var host string = os.Getenv("DBHOST")
+	var port string = os.Getenv("DBPORT")
 	var database string = os.Getenv("DBNAME")
 
-	dsn := fmt.Sprintf("%v:%v@%v/%v?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, database)
+	dsn := "host=" + host + " user=" + username + " password=" + password + " dbname=" + database + " port=" + port + " sslmode=require"
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		return nil, err
