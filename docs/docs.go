@@ -422,6 +422,11 @@ var doc = `{
         },
         "/drafts": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get all drafts navigated by last-id and limit.",
                 "produces": [
                     "application/json"
@@ -498,6 +503,11 @@ var doc = `{
         },
         "/drafts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get detail of draft specified by id",
                 "produces": [
                     "application/json"
@@ -687,6 +697,11 @@ var doc = `{
         },
         "/inboxes/{receiver-id}": {
             "get": {
+                "security": [
+                    {
+                        "AuthToken": []
+                    }
+                ],
                 "description": "get all inboxes navigated by last-id and limit.",
                 "produces": [
                     "application/json"

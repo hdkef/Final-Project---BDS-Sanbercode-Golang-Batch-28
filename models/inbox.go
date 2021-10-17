@@ -14,7 +14,11 @@ type Inbox struct {
 	gorm.Model
 }
 
-func (m *Inbox) GetAll(db *gorm.DB, receiverid int, lastid int, limit int) ([]Inbox, error) {
+func (m *Inbox) GetAll(db *gorm.DB, receiverid int, lastid int, limit int, usr *User) ([]Inbox, error) {
+	//auth
+	if receiverid != int(usr.ID) {
+		return nil, errors.New("unauthorized")
+	}
 	var inboxs []Inbox
 	res := db.Where("receiver_id = ? AND id > ?", receiverid, lastid).Find(&inboxs).Limit(limit)
 	return inboxs, res.Error

@@ -14,6 +14,7 @@ type InboxCtl struct {
 }
 
 // InboxGetAll godoc
+// @Security AuthToken
 // @Tags inboxes
 // @Summary get all inboxes
 // @Description get all inboxes navigated by last-id and limit.
@@ -45,6 +46,12 @@ func (c *InboxCtl) GetAll() gin.HandlerFunc {
 			return
 		}
 
+		usr, err := utils.ExtractUserContext(c)
+		if err != nil {
+			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+
 		db, err := utils.ExtractDB(c)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
@@ -55,7 +62,7 @@ func (c *InboxCtl) GetAll() gin.HandlerFunc {
 
 		var inboxMdl models.Inbox
 
-		inboxes, err := inboxMdl.GetAll(db, receiverID, lastID, limit)
+		inboxes, err := inboxMdl.GetAll(db, receiverID, lastID, limit, &usr)
 
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())

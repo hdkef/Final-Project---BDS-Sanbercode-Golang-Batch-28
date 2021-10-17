@@ -522,6 +522,8 @@ paths:
             items:
               $ref: '#/definitions/swagmodel.GetDraft'
             type: array
+      security:
+      - AuthToken: []
       summary: get all drafts
       tags:
       - drafts
@@ -586,6 +588,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/swagmodel.GetDraft'
+      security:
+      - AuthToken: []
       summary: get one draft
       tags:
       - drafts
@@ -696,6 +700,8 @@ paths:
             items:
               $ref: '#/definitions/swagmodel.GetInbox'
             type: array
+      security:
+      - AuthToken: []
       summary: get all inboxes
       tags:
       - inboxes
