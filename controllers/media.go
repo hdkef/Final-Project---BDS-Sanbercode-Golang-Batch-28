@@ -56,7 +56,7 @@ func (c *MediaCtl) GetAll() gin.HandlerFunc {
 		}
 		var mediaMdl models.Media
 		//get all media
-		media, err := mediaMdl.GetAll(db, &usr, uint(id), lastID, limit)
+		media, err := mediaMdl.GetAll(db, &usr, lastID, limit)
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
