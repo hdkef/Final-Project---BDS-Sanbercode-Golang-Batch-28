@@ -90,7 +90,7 @@ func main() {
 		}
 		inboxes := v1.Group("/inboxes")
 		{
-			inboxes.GET(":receiver-id", inboxCtl.GetAll())
+			inboxes.GET("", inboxCtl.GetAll())
 			inboxes.POST(":receiver-id", inboxCtl.Post())
 			inboxes.PUT(":id", inboxCtl.Put())
 			inboxes.DELETE(":id", inboxCtl.Delete())

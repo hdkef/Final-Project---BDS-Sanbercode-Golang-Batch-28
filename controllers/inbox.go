@@ -26,13 +26,7 @@ type InboxCtl struct {
 // @Router /inboxes/{receiver-id} [get]
 func (c *InboxCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//get last-id and limit from query and receiver-id from path
-
-		receiverID, err := strconv.Atoi(c.Params.ByName("receiver-id"))
-		if err != nil {
-			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
-			return
-		}
+		//get last-id and limit from query
 
 		lastID, err := strconv.Atoi(c.Query("last-id"))
 		if err != nil {
