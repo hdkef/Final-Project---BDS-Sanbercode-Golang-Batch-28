@@ -32,12 +32,7 @@ type MediaCtl struct {
 // @Router /media [get]
 func (c *MediaCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//get id from path, last-id and limit from query
-		id, err := strconv.Atoi(c.Params.ByName("id"))
-		if err != nil {
-			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
-			return
-		}
+		//get last-id and limit from query
 		lastID, err := strconv.Atoi(c.Params.ByName("last-id"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())

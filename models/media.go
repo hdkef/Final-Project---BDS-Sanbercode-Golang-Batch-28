@@ -23,14 +23,9 @@ func init() {
 
 var MEDIAPTH string = os.Getenv("MEDIAPTH")
 
-func (m *Media) GetAll(db *gorm.DB, usr *User, id uint, lastid int, limit int) ([]Media, error) {
-	//validate creator_id = usr.id and user is not super-admin
-	if usr.ID != id && usr.Role != "super-admin" {
-		return nil, errors.New("unauthorized")
-	}
-
+func (m *Media) GetAll(db *gorm.DB, usr *User, lastid int, limit int) ([]Media, error) {
 	var media []Media
-	res := db.Where("creator_id = ? AND id > ?", id, lastid).Find(&media).Limit(limit)
+	res := db.Where("creator_id = ? AND id > ?", usr.ID, lastid).Find(&media).Limit(limit)
 	return media, res.Error
 }
 
