@@ -31,5 +31,10 @@ func DBConn() (*gorm.DB, error) {
 
 	db.AutoMigrate(&models.Article{}, &models.Comment{}, &models.Draft{}, &models.Inbox{}, &models.Media{}, &models.Rating{}, &models.User{})
 
+	err = initSuperAdmin(db)
+	if err != nil {
+		return nil, err
+	}
+
 	return db, nil
 }
