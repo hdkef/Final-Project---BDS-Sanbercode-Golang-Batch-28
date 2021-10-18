@@ -33,12 +33,13 @@ type MediaCtl struct {
 func (c *MediaCtl) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//get last-id and limit from query
-		lastID, err := strconv.Atoi(c.Params.ByName("last-id"))
+		lastID, err := strconv.Atoi(c.Query("last-id"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		limit, err := strconv.Atoi(c.Params.ByName("limit"))
+
+		limit, err := strconv.Atoi(c.Query("limit"))
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
 			return
