@@ -115,6 +115,11 @@ func (m *User) Put(db *gorm.DB, usr *User, id uint) error {
 		AvatarURL: m.AvatarURL,
 	}
 
+	//only super-admin can edit role
+	if usr.Role == "super-admin" {
+		newUser.Role = m.Role
+	}
+
 	var oldUser User
 	err := db.Where("id = ?", id).First(&oldUser).Error
 	if err != nil {
