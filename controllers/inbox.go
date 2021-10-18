@@ -56,7 +56,7 @@ func (c *InboxCtl) GetAll() gin.HandlerFunc {
 
 		var inboxMdl models.Inbox
 
-		inboxes, err := inboxMdl.GetAll(db, receiverID, lastID, limit, &usr)
+		inboxes, err := inboxMdl.GetAll(db, lastID, limit, &usr)
 
 		if err != nil {
 			utils.ResponseError(c, http.StatusInternalServerError, err.Error())
