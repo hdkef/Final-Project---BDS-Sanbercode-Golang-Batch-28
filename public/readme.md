@@ -1,0 +1,1 @@
+folder public berisi image / media uploaded
